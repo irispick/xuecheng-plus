@@ -1,5 +1,6 @@
 package com.xuecheng.base.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
@@ -19,9 +20,11 @@ public class PageParams {
     // 每页记录默认值
     public static final long DEFAULT_PAGE_SIZE = 10L;
 
+    @ApiModelProperty("当前页码")
     // 当前页码
     private long pageNo = DEFAULT_PAGE_CURRENT;
 
+    @ApiModelProperty("每页记录数")
     // 每页记录数默认值
     private long pageSize = DEFAULT_PAGE_SIZE;
 
