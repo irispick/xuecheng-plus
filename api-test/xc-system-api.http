@@ -1,0 +1,4 @@
+### 课程数据字典
+GET {{system_host}}/system/dictionary/all
+Content-Type: application/json
+
