@@ -1,16 +1,16 @@
 package com.xuecheng.content.service;
 
-import com.xuecheng.content.model.po.Teachplan;
+import com.xuecheng.content.model.po.CourseCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 课程计划 服务类
+ * 课程分类 服务类
  * </p>
  *
  * @author itcast
  * @since 2023-02-13
  */
-public interface TeachplanService extends IService<Teachplan> {
+public interface CourseCategoryService extends IService<CourseCategory> {
 
 }
