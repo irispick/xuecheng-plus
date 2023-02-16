@@ -12,4 +12,27 @@ Content-Type: application/json
 GET {{content_host}}/content/course-category/tree-nodes
 
 
-### 新增课程接口
+### 创建课程
+POST {{content_host}}/content/course
+Content-Type: application/json
+
+{
+  "mt": "1-1",
+  "st": "1-1-1",
+  "name": "测试课程111",
+  "pic": "",
+  "teachmode": "200002",
+  "users": "初级人员",
+  "tags": "测试标签",
+  "grade": "204001",
+  "description": "课程介绍测试",
+  "charge": "201001",
+  "price": "",
+  "originalPrice": "",
+  "qq": "3213444",
+  "wechat": "3213444x",
+  "phone": "13213444",
+  "validDays": 365
+}
+
+###
