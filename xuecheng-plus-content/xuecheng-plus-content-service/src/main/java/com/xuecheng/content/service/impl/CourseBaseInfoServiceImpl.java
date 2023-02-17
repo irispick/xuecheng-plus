@@ -2,6 +2,8 @@ package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xuecheng.base.exception.CommonError;
+import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
@@ -80,7 +82,10 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
         // 对参数进行合法性校验
         if (StringUtils.isBlank(addCourseDto.getName())) {
-            throw new RuntimeException("课程名称为空");
+            // 抛出异常
+//            throw new RuntimeException("课程名称为空");
+            XueChengPlusException.cast("课程名称为空");
+//            XueChengPlusException.cast(CommonError.PARAMS_ERROR);
         }
         if (StringUtils.isBlank(addCourseDto.getMt())) {
             throw new RuntimeException("课程分类为空");
@@ -137,7 +142,8 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         String charge = courseMarket.getCharge();
         if ("201001".equals(charge)) {  //收费
             if (courseMarket.getOriginalPrice() == null || courseMarket.getOriginalPrice() <= 0 || courseMarket.getPrice() < 0 || courseMarket.getPrice() == null) {
-                throw new RuntimeException("收费课程价格不能为空");
+//                throw new RuntimeException("收费课程价格不能为空");
+                XueChengPlusException.cast("收费课程价格不能为空");
             }
         }
 
