@@ -2,10 +2,15 @@ package com.xuecheng.base.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.List;
 
 /**
  * @author Iris
@@ -29,6 +34,23 @@ public class GlobalExceptionHandler {
         String errMessage = e.getErrMessage();
 
         return new RestErrorResponse(errMessage);
+    }
+
+    // 处理MethodArgumentNotValidException异常
+    @ResponseBody//将信息返回为json格式
+    @ExceptionHandler(MethodArgumentNotValidException.class)//此方法捕获XueChengPlusException异常
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)//状态码返回500
+    public RestErrorResponse doMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        BindingResult bindingResult = e.getBindingResult();
+        // 校验的错误信息
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        StringBuffer errors = new StringBuffer();
+        fieldErrors.forEach(error -> {
+            errors.append(error.getDefaultMessage()).append(",");
+        });
+
+        return new RestErrorResponse(errors.toString());
     }
 
     // 捕获不可预知异常 Exception
