@@ -30,4 +30,23 @@ public interface TeachplanService {
     * @date 2023/2/20 15:54
     */
     void saveTeachplan(SaveTeachplanDto teachplanDto);
+
+    /**
+    * @description 删除课程计划
+    * @param teachplanId 课程计划id
+    * @return void
+    * @author Iris
+    * @date 2023/2/22 14:12
+    */
+    void deleteTeachplan(long teachplanId);
+
+    /**
+    * @description 上移或下移课程计划
+    * @param movetype 移动类型
+    * @param teachplanId 课程计划id
+    * @return void
+    * @author Iris
+    * @date 2023/2/22 16:43
+    */
+    void moveTeachplan(String movetype, long teachplanId);
 }

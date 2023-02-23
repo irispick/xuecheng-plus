@@ -72,6 +72,7 @@ public class CourseBaseInfoController {
         return courseBaseInfoService.getCourseBaseInfo(courseId);
     }
 
+    @ApiOperation("修改课程信息接口")
     @PutMapping("/course")
     public CourseBaseInfoDto modifyCourseBase(@RequestBody EditCourseDto editCourseDto) {
 
