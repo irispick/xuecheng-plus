@@ -75,8 +75,8 @@ public class MediaFilesController {
     public RestResponse<String> getPlayUrlByMediaId(@PathVariable String mediaId) {
         MediaFiles mediaFiles = mediaFileService.getFileById(mediaId);
         String url = mediaFiles.getUrl();
-        if (mediaFiles == null || StringUtils.isEmpty(url)) {
-            XueChengPlusException.cast("视频还没有转码处理");
+        if (StringUtils.isEmpty(url)) {
+            XueChengPlusException.cast("视频还没有转码处理，请稍后预览b");
         }
         return RestResponse.success(url);
     }
