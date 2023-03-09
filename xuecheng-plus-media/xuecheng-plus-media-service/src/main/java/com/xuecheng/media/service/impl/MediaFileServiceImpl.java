@@ -8,6 +8,7 @@ import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.model.RestResponse;
+import com.xuecheng.base.util.XueChengConstant;
 import com.xuecheng.media.mapper.MediaFilesMapper;
 import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
@@ -289,10 +290,13 @@ public class MediaFileServiceImpl implements MediaFileService {
             }
             mediaFiles.setCreateDate(LocalDateTime.now());
             mediaFiles.setStatus("1");
-            mediaFiles.setAuditStatus("002003");
+            mediaFiles.setAuditStatus(XueChengConstant.AuditStatusOfObject.PASS);
 
             // 插入文件表
-            mediaFilesMapper.insert(mediaFiles);
+            int insert = mediaFilesMapper.insert(mediaFiles);
+            if (insert <= 0) {
+                log.debug("向数据库保存文件失败, bucket:{}, objectName:{}", bucket, objectName);
+            }
 
             // 将avi视频添加到待处理任务表
             if ("video/x-msvideo".equals(mimeType)) {
@@ -308,6 +312,10 @@ public class MediaFileServiceImpl implements MediaFileService {
         return mediaFiles;
     }
 
+    private void addWaitingTask(MediaFiles mediaFiles) {
+        // 获取文件的mimyType
+        // 通过mimyType判断，如果是avi视频写入待处理任务
+    }
     @Override
     public RestResponse<Boolean> checkFile(String fileMd5) {
         // 思路：在文件表存在，并且在文件系统存在，此文件才存在

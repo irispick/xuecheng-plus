@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 /**
  * @author Mr.M
  * @version 1.0
@@ -80,4 +78,6 @@ public class MediaFilesController {
         }
         return RestResponse.success(url);
     }
+
+
 }

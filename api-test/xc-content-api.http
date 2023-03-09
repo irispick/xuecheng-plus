@@ -50,4 +50,15 @@ Content-Type: application/json
   "pname" : "新章名称 [点击修改]"
 }
 
+
+### 课程计划绑定视频
+POST {{gateway_host}}/content/teachplan/association/media
+Content-Type: application/json
+
+{
+  "mediaId": "",
+  "fileName": "",
+  "teachplanId": ""
+}
+
 ###
