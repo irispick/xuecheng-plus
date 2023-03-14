@@ -61,4 +61,36 @@ Content-Type: application/json
   "teachplanId": ""
 }
 
+### 查询教师
+GET {{gateway_host}}/content/courseTeacher/list/74
+Content-Type: application/json
+
+### 添加教师/修改教师
+POST {{gateway_host}}/content/courseTeacher
+Content-Type: application/json
+
+{
+  "courseId": 75,
+  "teacherName": "王老师",
+  "position": "教师职位",
+  "introduction": "教师简介"
+}
+
+### 修改教师
+POST {{gateway_host}}/content/courseTeacher
+Content-Type: application/json
+
+{
+  "id": 22,
+  "courseId": 75,
+  "teacherName": "王老师",
+  "position": "教师职位",
+  "introduction": null,
+  "photograph": null
+}
+
+###
+DELETE {{gateway_host}}/content/courseTeacher/course/75/22
+Content-Type: application/json
+
 ###

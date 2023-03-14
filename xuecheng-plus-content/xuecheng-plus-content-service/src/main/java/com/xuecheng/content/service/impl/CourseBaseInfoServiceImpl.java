@@ -6,16 +6,13 @@ import com.xuecheng.base.exception.CommonError;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
-import com.xuecheng.content.mapper.CourseBaseMapper;
-import com.xuecheng.content.mapper.CourseCategoryMapper;
-import com.xuecheng.content.mapper.CourseMarketMapper;
+import com.xuecheng.base.util.XueChengConstant;
+import com.xuecheng.content.mapper.*;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
-import com.xuecheng.content.model.po.CourseBase;
-import com.xuecheng.content.model.po.CourseCategory;
-import com.xuecheng.content.model.po.CourseMarket;
+import com.xuecheng.content.model.po.*;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +45,17 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Autowired
     private CourseMarketServiceImpl courseMarketService;
+
+    @Autowired
+    private TeachplanMapper teachplanMapper;
+
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
+
+    @Autowired
+    private TeachplanMediaMapper teachplanMediaMapper;
+
+
 
     @Override
     public PageResult<CourseBase> queryCourseBaseList(PageParams params, QueryCourseParamsDto queryCourseParamsDto) {
@@ -247,6 +255,41 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         // 查询课程信息
         CourseBaseInfoDto courseBaseInfo = this.getCourseBaseInfo(id);
         return courseBaseInfo;
+    }
+
+    @Transactional
+    @Override
+    public void deleteCourse(Long companyId, Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null) {
+            XueChengPlusException.cast("当前课程不存在");
+        }
+        if (!companyId.equals(courseBase.getCompanyId())) {
+            XueChengPlusException.cast("您无权删除其他机构的课程");
+        }
+        // 查询课程审核状态，未提交时可删除
+        String auditStatus = courseBase.getAuditStatus();
+        if (!XueChengConstant.AuditStatusOfCourse.UNCOMMITED.equals(auditStatus)) {
+            XueChengPlusException.cast("当前课程已提交无法删除");
+        }
+        // 删除课程相关的课程教师信息
+        LambdaQueryWrapper<CourseTeacher> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(CourseTeacher::getCourseId, courseId);
+        courseTeacherMapper.delete(queryWrapper);
+        // 删除课程计划与媒资文件的绑定信息
+        LambdaQueryWrapper<TeachplanMedia> tMQueryWrapper = new LambdaQueryWrapper<>();
+        tMQueryWrapper.eq(TeachplanMedia::getCourseId, courseId);
+        teachplanMediaMapper.delete(tMQueryWrapper);
+
+        // 删除课程相关的课程计划
+        LambdaQueryWrapper<Teachplan> tQueryWrapper = new LambdaQueryWrapper<>();
+        tQueryWrapper.eq(Teachplan::getCourseId, courseId);
+        teachplanMapper.delete(tQueryWrapper);
+
+        // 删除课程相关的营销信息
+        courseMarketMapper.deleteById(courseId);
+        // 删除课程相关的基本信息
+        courseBaseMapper.deleteById(courseId);
     }
 
     /**

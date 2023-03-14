@@ -18,4 +18,14 @@ public interface CoursePublishService {
     * @date 2023/3/10 0:05
     */
     CoursePreviewDto getCoursePreviewInfo(Long courseId);
+
+    /**
+    * @description 提交审核
+    * @param companyId 机构id
+    * @param courseId 课程id
+    * @return void
+    * @author Iris
+    * @date 2023/3/11 18:04
+    */
+    void commitAudit(Long companyId, Long courseId);
 }

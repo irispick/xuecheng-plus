@@ -55,4 +55,25 @@ public interface XueChengConstant {
         String NOTIFY_SUCCESS = "003002";
     }
 
+    // [{"code":"202001","desc":"审核未通过"},{"code":"202002","desc":"未提交"},
+    // {"code":"202003","desc":"已提交"},{"code":"202004","desc":"审核通过"}]
+    interface AuditStatusOfCourse {
+        /**
+         * 审核未通过
+         */
+        String FAIL = "202001";
+        /**
+         * 未提交
+         */
+        String UNCOMMITED = "202002";
+        /**
+         * 已提交
+         */
+        String COMMITED = "202003";
+        /**
+         * 审核通过
+         */
+        String PASS = "202004";
+    }
+
 }
